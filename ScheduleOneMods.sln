@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ContractAggregates", "src\ContractAggregates\ContractAggregates.csproj", "{B0AE1481-9868-4267-A7D3-C64ECBBB1D36}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ContractAggregates.Tests", "tests\ContractAggregates.Tests\ContractAggregates.Tests.csproj", "{9B070B56-4885-4535-A265-E43336FE9752}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B0AE1481-9868-4267-A7D3-C64ECBBB1D36}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B0AE1481-9868-4267-A7D3-C64ECBBB1D36}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B0AE1481-9868-4267-A7D3-C64ECBBB1D36}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B0AE1481-9868-4267-A7D3-C64ECBBB1D36}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9B070B56-4885-4535-A265-E43336FE9752}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9B070B56-4885-4535-A265-E43336FE9752}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9B070B56-4885-4535-A265-E43336FE9752}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9B070B56-4885-4535-A265-E43336FE9752}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
