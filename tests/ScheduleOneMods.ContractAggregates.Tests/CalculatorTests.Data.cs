@@ -1,4 +1,4 @@
-namespace ContractAggregates.Tests;
+namespace ScheduleOneMods.ContractAggregates.Tests;
 
 public partial class CalculatorTests
 {

@@ -1,6 +1,6 @@
 using MelonLoader;
 
-namespace ContractAggregates;
+namespace ScheduleOneMods.Logging;
 
 public static partial class Log
 {

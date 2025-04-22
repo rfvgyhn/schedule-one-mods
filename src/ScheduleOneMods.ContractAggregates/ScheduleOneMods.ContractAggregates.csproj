@@ -35,8 +35,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Log.Unity.cs">
-      <DependentUpon>Log.cs</DependentUpon>
-    </Compile>
+    <ProjectReference Include="..\ScheduleOneMods.Logging\ScheduleOneMods.Logging.csproj" />
   </ItemGroup>
 </Project>

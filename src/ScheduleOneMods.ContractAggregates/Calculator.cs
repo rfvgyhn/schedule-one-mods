@@ -1,6 +1,6 @@
 using ScheduleOne.Quests;
 
-namespace ContractAggregates;
+namespace ScheduleOneMods.ContractAggregates;
 
 public record Summary(string ProductId, int Total, Dictionary<string, int> Aggregates);
 

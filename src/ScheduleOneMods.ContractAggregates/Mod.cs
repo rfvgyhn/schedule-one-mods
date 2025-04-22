@@ -1,11 +1,11 @@
 ﻿using System.Collections;
-using ContractAggregates;
+using ScheduleOneMods.ContractAggregates;
 using MelonLoader;
 using ScheduleOne.DevUtilities;
 using ScheduleOne.Quests;
 using ScheduleOne.UI.Phone;
 using UnityEngine;
-using ScheduleOne;
+using ScheduleOneMods.Logging;
 using UnityEngine.UI;
 
 [assembly: MelonInfo(typeof(Mod), "Contract Aggregates", "0.0.1", "rfvgyhn")]

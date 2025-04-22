@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace ContractAggregates;
+namespace ScheduleOneMods.ContractAggregates;
 
 [RequireComponent(typeof(GridLayoutGroup))]
 public class PercentageWidthGridLayout : MonoBehaviour, ILayoutController

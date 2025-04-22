@@ -1,0 +1,34 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netstandard2.1</TargetFramework>
+        <Nullable>enable</Nullable>
+        <LangVersion>latest</LangVersion>
+        <PlatformTarget>x64</PlatformTarget>
+    </PropertyGroup>
+    
+    <ItemGroup>
+        <PackageReference Include="LavaGang.MelonLoader" Version="0.7.0">
+            <NoWarn>NU1701</NoWarn>
+        </PackageReference>
+    </ItemGroup>
+    
+    <ItemGroup>
+        <Reference Include="UnityEngine.CoreModule">
+            <HintPath>..\..\lib\UnityEngine.CoreModule.dll</HintPath>
+        </Reference>
+        <Reference Include="UnityEngine.TextRenderingModule">
+            <HintPath>..\..\lib\UnityEngine.TextRenderingModule.dll</HintPath>
+        </Reference>
+        <Reference Include="UnityEngine.UI">
+            <HintPath>..\..\lib\UnityEngine.UI.dll</HintPath>
+        </Reference>
+    </ItemGroup>
+    
+    <ItemGroup>
+      <Compile Update="Log.Unity.cs">
+        <DependentUpon>Log.cs</DependentUpon>
+      </Compile>
+    </ItemGroup>
+
+</Project>

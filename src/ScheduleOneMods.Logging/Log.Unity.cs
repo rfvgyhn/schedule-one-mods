@@ -1,8 +1,10 @@
+using System.Collections.Generic;
+using System.IO;
 using System.Text;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace ContractAggregates;
+namespace ScheduleOneMods.Logging;
 
 public static partial class Log
 {

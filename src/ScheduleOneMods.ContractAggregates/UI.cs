@@ -1,9 +1,10 @@
 using ScheduleOne;
 using ScheduleOne.Product;
+using ScheduleOneMods.Logging;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace ContractAggregates;
+namespace ScheduleOneMods.ContractAggregates;
 
 public static class UI
 {
