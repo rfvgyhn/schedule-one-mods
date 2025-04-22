@@ -11,7 +11,7 @@ using UnityEngine.UI;
 [assembly: MelonInfo(typeof(Mod), "Contract Aggregates", "0.0.1", "rfvgyhn")]
 [assembly: MelonGame("TVGS", "Schedule I")]
 
-namespace ContractAggregates;
+namespace ScheduleOneMods.ContractAggregates;
 
 public sealed class Mod : MelonMod
 {
@@ -19,7 +19,9 @@ public sealed class Mod : MelonMod
     private Calculator? _calculator;
     private int _lastContractCount = -1;
     private GameObject? _summary;
+#if DEBUG
     private bool _logged;
+#endif
 
     public override void OnSceneWasInitialized(int buildIndex, string sceneName)
     {
@@ -66,14 +68,16 @@ public sealed class Mod : MelonMod
         _summary = UI.CreateSummary(_container, totals);
         Log.Trace("Summary created");
 
+#if DEBUG
         if (!_logged)
         {
-            // Log.Unity.WriteGameObject("journal-app.txt", journalApp.transform);
+            // Log.Unity.WriteGameObject("journalApp.txt", journalApp.transform);
             // Log.Unity.WriteGameObject("GenericQuestEntry.txt", journalApp.GenericQuestEntry.transform);
             // Log.Unity.WriteGameObject("EntryContainer.txt", journalApp.EntryContainer);
             // Log.Unity.WriteGameObject("GenericDetailsPanel.txt", journalApp.GenericDetailsPanel.transform);
             _logged = true;
         }
+#endif
     }
 
     private IEnumerator InitUi()
