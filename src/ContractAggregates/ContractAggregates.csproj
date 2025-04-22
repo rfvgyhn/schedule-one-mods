@@ -33,4 +33,10 @@
       <HintPath>..\..\lib\UnityEngine.UI.dll</HintPath>
     </Reference>
   </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Log.Unity.cs">
+      <DependentUpon>Log.cs</DependentUpon>
+    </Compile>
+  </ItemGroup>
 </Project>

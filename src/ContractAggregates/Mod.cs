@@ -28,9 +28,9 @@ public sealed class Mod : MelonMod
             return;
 
         MelonCoroutines.Start(InitUi());
-        _calculator = new(new()
+        _calculator = new(new() // TODO: figure out a way to look these packaging defs up at runtime
         {
-            [1] = "bag",
+            [1] = "baggie",
             [5] = "jar",
             [20] = "brick"
         });
@@ -63,40 +63,17 @@ public sealed class Mod : MelonMod
         var totals = _calculator!.CalculateTotals(activeContracts);
         
         Log.Trace("Creating summary");
-        _summary = CreateSummary(_container, totals);
+        _summary = UI.CreateSummary(_container, totals);
         Log.Trace("Summary created");
 
         if (!_logged)
         {
-            //Log.Journal.LogObjectPaths(journalApp);
-            //Log.Journal.LogUiElements();
+            // Log.Unity.WriteGameObject("journal-app.txt", journalApp.transform);
+            // Log.Unity.WriteGameObject("GenericQuestEntry.txt", journalApp.GenericQuestEntry.transform);
+            // Log.Unity.WriteGameObject("EntryContainer.txt", journalApp.EntryContainer);
+            // Log.Unity.WriteGameObject("GenericDetailsPanel.txt", journalApp.GenericDetailsPanel.transform);
             _logged = true;
         }
-    }
-
-    private static GameObject CreateSummary(Transform parent, Summary[] aggregates)
-    {
-        var summary = new GameObject("Summary");
-        summary.transform.SetParent(parent, false);
-
-        var transform = summary.AddComponent<RectTransform>();
-        transform.anchorMin = Vector2.zero;
-        transform.anchorMax = Vector2.one;
-        transform.anchoredPosition = new Vector2(60, -60);
-
-        var t = aggregates.Select(s => string.Format("{0}x{1}: {2}", 
-            s.Total,
-            Registry.GetItem(s.ProductId).Name,
-            string.Join(' ', s.Aggregates.Select(v => string.Format("{0}x {1}", v.Value, v.Key)))));
-
-        var text = summary.AddComponent<Text>();
-        text.text = string.Join(", ", t);
-        text.font = Resources.GetBuiltinResource<Font>("Arial.ttf");
-        text.fontSize = 14;
-        text.color = Color.gray;
-        text.alignment = TextAnchor.UpperLeft;
-
-        return summary;
     }
 
     private IEnumerator InitUi()
@@ -115,10 +92,10 @@ public sealed class Mod : MelonMod
         var (journalContainer, tasksPanel, detailsPanel) = existingElements.Value;
 
         Log.Trace("Creating new UI");
-        _container = CreateUi(journalContainer, tasksPanel, detailsPanel);
+        _container = UI.CreateSummarySection(journalContainer, tasksPanel, detailsPanel);
 
         Log.Trace("Adjusting original UI elements");
-        AdjustTasksPanel(tasksPanel);
+        UI.AdjustTasksPanel(tasksPanel);
     }
 
     private static (Transform journalContainer, Transform tasksPanel, GameObject detailsPanel)? FindRequiredUiElements(
@@ -158,40 +135,5 @@ public sealed class Mod : MelonMod
         }
 
         return (journalContainer, tasksPanel, detailsPanel.gameObject);
-    }
-
-    private static void AdjustTasksPanel(Transform tasksPanel)
-    {
-        var rTransform = tasksPanel.GetComponent<RectTransform>();
-        rTransform.anchorMin = new Vector2(rTransform.anchorMin.x, 0.3f);
-        rTransform.offsetMin = new Vector2(rTransform.offsetMin.x, rTransform.offsetMin.y - 60);
-    }
-
-    private static void CleanupClone(Transform clone)
-    {
-        var noDetailsLabel = clone.transform.Find("NoDetails");
-        if (noDetailsLabel is not null)
-            UnityEngine.Object.Destroy(noDetailsLabel.gameObject);
-        else
-            Log.Trace("NoDetails not found");
-    }
-
-    private static Transform CreateUi(Transform parent, Transform tasksPanel, GameObject detailsPanel)
-    {
-        Log.Trace("Creating outer container");
-        var summaryPanel = UnityEngine.Object.Instantiate(detailsPanel);
-        summaryPanel.gameObject.name = "Summary";
-        summaryPanel.transform.SetParent(parent, false);
-
-        var container = summaryPanel.transform.Find("Container");
-        CleanupClone(container);
-
-        summaryPanel.transform.Find("Title")!.GetComponent<Text>()!.text = "Deal Summary";
-        var rTransform = summaryPanel.GetComponent<RectTransform>();
-        rTransform.anchorMin = new Vector2(0, 0);
-        rTransform.anchorMax = new Vector2(tasksPanel.GetComponent<RectTransform>()!.anchorMax.x, 0.3f);
-        rTransform.offsetMax = new Vector2(10, rTransform.offsetMax.y);
-
-        return container.transform;
     }
 }
