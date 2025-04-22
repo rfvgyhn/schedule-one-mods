@@ -34,7 +34,13 @@
     </Reference>
   </ItemGroup>
 
-  <ItemGroup>
+  <ItemGroup Condition="$(Configuration) == 'Debug'">
     <ProjectReference Include="..\ScheduleOneMods.Logging\ScheduleOneMods.Logging.csproj" />
+  </ItemGroup>
+
+  <ItemGroup Condition="$(Configuration) == 'Release'">
+    <Compile Include="..\ScheduleOneMods.Logging\Log.cs">
+      <Link>Log.cs</Link>
+    </Compile>
   </ItemGroup>
 </Project>
