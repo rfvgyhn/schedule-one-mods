@@ -7,7 +7,7 @@ Collection of mods for the game [Schedule 1]. Requires the use of [MelonLoader].
 * [Build]
 
 ## Available Mods
-* Contract Aggregates
+* Deals Summary
    
   Provides a summary of your active deals in the Journal app. Includes the totals of each product and packaging aggregates
 
@@ -16,7 +16,7 @@ Collection of mods for the game [Schedule 1]. Requires the use of [MelonLoader].
 ## Install
 1. Download and setup [MelonLoader] by following the [instructions on the wiki]. Do note that Schedule 1 is an Il2Cpp game.
 2. Download the [latest release]
-3. Extract the DLL from the zip/tar archive
+3. Extract the DLL from the zip
 4. Copy DLL into your `steamapps/common/Schedule I/Mods` folder
 
 ## Build
