@@ -1,9 +1,9 @@
 ﻿using System.Collections;
 using ScheduleOneMods.ContractAggregates;
 using MelonLoader;
-using ScheduleOne.DevUtilities;
-using ScheduleOne.Quests;
-using ScheduleOne.UI.Phone;
+using Il2CppScheduleOne.DevUtilities;
+using Il2CppScheduleOne.Quests;
+using Il2CppScheduleOne.UI.Phone;
 using ScheduleOneMods.Logging;
 
 [assembly: MelonInfo(typeof(Mod), "Contract Aggregates", "0.0.1", "rfvgyhn")]
@@ -46,12 +46,17 @@ public sealed class Mod : MelonMod
         if (!journalApp.isOpen)
             return;
 
-        var activeContracts = Contract.Contracts.Where(c => c.Dealer is null && c.QuestState == EQuestState.Active)
-            .ToArray();
-        if (_lastContractCount == activeContracts.Length)
+        var activeContracts = new List<Contract>();
+        foreach (var c in Il2CppScheduleOne.Quests.Contract.Contracts)
+        {
+            if (c.Dealer is null && c.QuestState == EQuestState.Active)
+                activeContracts.Add(new(c));
+        }
+
+        if (_lastContractCount == activeContracts.Count)
             return;
-        _lastContractCount = activeContracts.Length;
-        Log.Debug(string.Format("Contract count: {0}", activeContracts.Length));
+        _lastContractCount = activeContracts.Count;
+        Log.Debug($"Contract count: {activeContracts.Count}");
 
         var totals = _calculator!.CalculateTotals(activeContracts);
 

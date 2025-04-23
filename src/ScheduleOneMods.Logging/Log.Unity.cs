@@ -60,12 +60,16 @@ public static partial class Log
             return sb.ToString();
         }
 
-        private static void WriteProp<T>(StreamWriter writer, int indent, string prop, T? value) =>
-            writer.WriteLine("{0}{1} = {2}", new string(' ', indent * IndentSize), prop, value?.ToString() ?? "null");
+        private static void WriteProp<T>(StreamWriter writer, int indent, string prop, T? value)
+        {
+            var spaces = new string(' ', indent * IndentSize);
+            writer.WriteLine($"{spaces}{prop} = {value?.ToString() ?? "null"}");
+        }
 
         public static void LogComponent(StreamWriter writer, Component c, int indent = 0)
         {
-            writer.WriteLine("{0}{1}", new string(' ', indent * IndentSize), c.GetType().FullName);
+            var spaces = new string(' ', indent * IndentSize);
+            writer.WriteLine($"{spaces}{c.GetType().FullName}");
             switch (c)
             {
                 case RectTransform t:

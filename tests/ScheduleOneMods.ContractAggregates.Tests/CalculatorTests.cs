@@ -1,7 +1,4 @@
-﻿using ScheduleOne.Product;
-using ScheduleOne.Quests;
-
-namespace ScheduleOneMods.ContractAggregates.Tests;
+﻿namespace ScheduleOneMods.ContractAggregates.Tests;
 
 public partial class CalculatorTests
 {
@@ -38,9 +35,9 @@ public partial class CalculatorTests
         {
             Contract[] contracts =
             [
-                CreateContract(CreateEntry(Product1, 6), CreateEntry(Product1, 0), CreateEntry(Product2, 1)),
-                CreateContract(CreateEntry(Product1, 4)),
-                CreateContract(CreateEntry(Product2, 2)),
+                new(new Entry(Product1, 6), new Entry(Product1, 0), new Entry(Product2, 1)),
+                new(new Entry(Product1, 4)),
+                new(new Entry(Product2, 2)),
             ];
             var calc = new Calculator(TestDenominations);
             Summary[] expected =
@@ -53,11 +50,5 @@ public partial class CalculatorTests
 
             Assert.Equivalent(expected, result, true);
         }
-
-        private Contract CreateContract(params List<ProductList.Entry> entries) =>
-            new() { ProductList = new() { entries = entries } };
-        
-        private ProductList.Entry CreateEntry(string id, int quantity) =>
-            new() { ProductID = id, Quantity = quantity };
     }
 }

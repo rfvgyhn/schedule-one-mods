@@ -1,7 +1,7 @@
 using MelonLoader;
-using ScheduleOne;
-using ScheduleOne.Product;
-using ScheduleOne.UI.Phone;
+using Il2CppScheduleOne;
+using Il2CppScheduleOne.Product;
+using Il2CppScheduleOne.UI.Phone;
 using ScheduleOneMods.Logging;
 using UnityEngine;
 using UnityEngine.UI;
@@ -114,8 +114,7 @@ public static class UI
             var rightSide = AddSide("Right", container.transform, false);
 
             AddIcon("ProductIcon", leftSide.transform, product.Icon);
-            AddText("Product", leftSide.transform, uiRefs.EntryText,
-                string.Format("{0}x {1}", summary.Total, product.Name));
+            AddText("Product", leftSide.transform, uiRefs.EntryText, $"{summary.Total}x {product.Name}");
 
             foreach (var agg in summary.Aggregates)
             {
@@ -159,14 +158,14 @@ public static class UI
 
             static void AddText(string name, Transform container, Text textTmpl, string content)
             {
-                var obj = new GameObject(name, typeof(RectTransform), typeof(Text));
+                var obj = new GameObject(name);
                 obj.transform.SetParent(container.transform, false);
 
-                var rect = obj.GetComponent<RectTransform>();
+                var rect = obj.AddComponent<RectTransform>();
                 rect.anchorMin = Vector2.zero;
                 rect.anchorMax = Vector2.one;
 
-                var text = obj.GetComponent<Text>();
+                var text = obj.AddComponent<Text>();
                 text.text = content;
                 text.alignment = TextAnchor.MiddleLeft;
                 text.fontSize = textTmpl.fontSize;
@@ -234,6 +233,7 @@ public static class UI
             var rect = container.transform.GetComponent<RectTransform>();
             rect.offsetMax = new Vector2(-25, rect.offsetMax.y); // Prevent scroll bar overlap
 
+            const float cellWidthPercentage = 0.5f;
             var layout = container.AddComponent<GridLayoutGroup>();
             layout.padding = new RectOffset(5, 10, 5, 5);
             layout.cellSize = new Vector2(0, 30);
@@ -241,18 +241,17 @@ public static class UI
             layout.constraint = GridLayoutGroup.Constraint.FixedColumnCount;
             layout.childAlignment = TextAnchor.UpperLeft;
             layout.spacing = new Vector2(5, 5);
-
-            container.AddComponent<PercentageWidthGridLayout>();
+            layout.cellSize = new Vector2(rect.rect.width * cellWidthPercentage, layout.cellSize.y);
         }
     }
 
     private static void DeleteAllChildren(Transform parent)
     {
-        Log.Trace(string.Format("Deleting all children({0}) from {1}", parent.childCount, parent.name));
+        Log.Trace($"Deleting all children({parent.childCount}) from {parent.name}");
 
         for (var i = 0; i < parent.childCount; i++)
             UnityEngine.Object.Destroy(parent.GetChild(i).gameObject);
 
-        Log.Trace(string.Format("Deleted all children from {0}", parent.name));
+        Log.Trace($"Deleted all children from {parent.name}");
     }
 }

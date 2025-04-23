@@ -1,8 +1,4 @@
-using ScheduleOne.Quests;
-
 namespace ScheduleOneMods.ContractAggregates;
-
-public record Summary(string ProductId, int Total, Dictionary<string, int> Aggregates);
 
 public class Calculator
 {
@@ -39,20 +35,20 @@ public class Calculator
         return sizes;
     }
     
-    public Summary[] CalculateTotals(Contract[] contracts)
+    public Summary[] CalculateTotals(IEnumerable<Contract> contracts)
     {
         var aggregates = new Dictionary<string, Dictionary<string, int>>();
         var totals = new Dictionary<string, int>();
         
         foreach (var c in contracts)
         {
-            foreach (var e in c.ProductList.entries)
+            foreach (var e in c.Entries)
             {
-                totals.TryGetValue(e.ProductID, out var total);
-                totals[e.ProductID] = total + e.Quantity;
+                totals.TryGetValue(e.ProductId, out var total);
+                totals[e.ProductId] = total + e.Quantity;
                 
                 var agg = Calculate(e.Quantity);
-                if (aggregates.TryGetValue(e.ProductID, out var existing))
+                if (aggregates.TryGetValue(e.ProductId, out var existing))
                 {
                     foreach (var a in agg)
                     {
@@ -61,7 +57,7 @@ public class Calculator
                     }
                 }
                 else
-                    aggregates.Add(e.ProductID, agg);
+                    aggregates.Add(e.ProductId, agg);
             }
         }
 
