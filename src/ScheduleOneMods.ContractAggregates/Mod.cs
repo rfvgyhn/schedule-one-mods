@@ -4,9 +4,7 @@ using MelonLoader;
 using ScheduleOne.DevUtilities;
 using ScheduleOne.Quests;
 using ScheduleOne.UI.Phone;
-using UnityEngine;
 using ScheduleOneMods.Logging;
-using UnityEngine.UI;
 
 [assembly: MelonInfo(typeof(Mod), "Contract Aggregates", "0.0.1", "rfvgyhn")]
 [assembly: MelonGame("TVGS", "Schedule I")]
@@ -15,10 +13,10 @@ namespace ScheduleOneMods.ContractAggregates;
 
 public sealed class Mod : MelonMod
 {
-    private Transform? _container;
+    private SummaryRefs? _summaryRefs;
+    private UiRefs? _uiRefs;
     private Calculator? _calculator;
     private int _lastContractCount = -1;
-    private GameObject? _summary;
 #if DEBUG
     private bool _logged;
 #endif
@@ -34,14 +32,14 @@ public sealed class Mod : MelonMod
         {
             [1] = "baggie",
             [5] = "jar",
-            [20] = "brick"
+            [20] = "brick" // TODO: doesn't have an "empty" icon. Need to figure out what the icon names are per product
         });
     }
 
     public override void OnUpdate()
     {
         base.OnUpdate();
-        if (!PlayerSingleton<JournalApp>.InstanceExists || _container is null)
+        if (!PlayerSingleton<JournalApp>.InstanceExists || _summaryRefs is null || _uiRefs is null)
             return;
 
         var journalApp = PlayerSingleton<JournalApp>.Instance;
@@ -52,21 +50,14 @@ public sealed class Mod : MelonMod
             .ToArray();
         if (_lastContractCount == activeContracts.Length)
             return;
+        _lastContractCount = activeContracts.Length;
         Log.Debug(string.Format("Contract count: {0}", activeContracts.Length));
 
-        _lastContractCount = activeContracts.Length;
-        if (_summary is not null)
-        {
-            Log.Trace("Destroying active summary object");
-            UnityEngine.Object.Destroy(_summary);
-            _summary = null;
-        }
-
         var totals = _calculator!.CalculateTotals(activeContracts);
-        
-        Log.Trace("Creating summary");
-        _summary = UI.CreateSummary(_container, totals);
-        Log.Trace("Summary created");
+
+        Log.Trace("Updating summary");
+        UI.UpdateSummary(_summaryRefs, _uiRefs, totals);
+        Log.Trace("Summary updated");
 
 #if DEBUG
         if (!_logged)
@@ -86,58 +77,19 @@ public sealed class Mod : MelonMod
             yield return null;
         Log.Trace("JournalApp instance exists");
 
-        var existingElements = FindRequiredUiElements(PlayerSingleton<JournalApp>.Instance);
-        if (existingElements is null)
+        _uiRefs = UI.FindRequiredUiElements(PlayerSingleton<JournalApp>.Instance);
+        if (_uiRefs is null)
         {
-            Log.Error("Required UI elements not found");
+            Log.Error("Expected UI elements not found");
             yield break;
         }
 
-        var (journalContainer, tasksPanel, detailsPanel) = existingElements.Value;
+        yield return null;
 
         Log.Trace("Creating new UI");
-        _container = UI.CreateSummarySection(journalContainer, tasksPanel, detailsPanel);
+        _summaryRefs = UI.CreateSummaryPanel(_uiRefs);
 
         Log.Trace("Adjusting original UI elements");
-        UI.AdjustTasksPanel(tasksPanel);
-    }
-
-    private static (Transform journalContainer, Transform tasksPanel, GameObject detailsPanel)? FindRequiredUiElements(
-        JournalApp app)
-    {
-        if (app.DetailsPanelContainer is null)
-        {
-            Log.Error("Details panel container is null");
-            return null;
-        }
-
-        var detailsPanel = app.DetailsPanelContainer?.parent;
-        if (detailsPanel is null)
-        {
-            Log.Debug("Details panel is null");
-            return null;
-        }
-
-        var journalContainer = detailsPanel.parent;
-        if (journalContainer is null)
-        {
-            Log.Debug("Journal container is null");
-            return null;
-        }
-
-        var tasksPanel = journalContainer.transform.Find("Tasks");
-        if (tasksPanel is null)
-        {
-            Log.Debug("Tasks panel is null");
-            return null;
-        }
-
-        if (tasksPanel.transform.Find("Title").GetComponent<Text>() is null)
-        {
-            Log.Debug("Title not found");
-            return null;
-        }
-
-        return (journalContainer, tasksPanel, detailsPanel.gameObject);
+        UI.AdjustTasksPanel(_uiRefs.TasksPanel.transform);
     }
 }
