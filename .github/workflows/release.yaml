@@ -18,7 +18,7 @@ jobs:
         include:
           - kind: windows
             os: windows-latest
-            target: win10-x64
+            target: win-x64
             config: Release
     runs-on: ${{ matrix.os }}
     steps:
