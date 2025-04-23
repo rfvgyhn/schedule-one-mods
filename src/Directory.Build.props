@@ -1,0 +1,27 @@
+<Project>
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <LangVersion>preview</LangVersion>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+  
+  <PropertyGroup>
+    <VersionPrefix>0.1.0</VersionPrefix>
+    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+  </PropertyGroup>
+  
+  <Target Name="SetSourceRevisionId" BeforeTargets="InitializeSourceControlInformation">
+    <Exec Command="git describe --long --always --dirty --exclude=* --abbrev=8"
+          ConsoleToMSBuild="True"
+          IgnoreExitCode="False">
+      <Output PropertyName="SourceRevisionId" TaskParameter="ConsoleOutput"/>
+    </Exec>
+  </Target>
+  
+  <ItemGroup>
+    <PackageReference Include="Il2CppInterop.Runtime" Version="1.4.5" />
+    <PackageReference Include="LavaGang.MelonLoader" Version="0.7.0" />
+  </ItemGroup>
+</Project>

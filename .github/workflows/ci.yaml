@@ -1,0 +1,58 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - '**'
+env:
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
+  DOTNET_CLI_TELEMETRY_OPTOUT: true
+  LANG: en_US.utf8
+jobs:
+  build:
+    strategy:
+      matrix:
+        kind: [ 'windows' ]
+        include:
+          - kind: windows
+            os: windows-latest
+            target: win10-x64
+            config: Release
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup dotnet
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '6.0.x'
+
+      - name: Restore
+        run: dotnet restore -r ${{ matrix.target }}
+
+      - name: Build
+        run: dotnet build -c ${{ matrix.config }} --no-restore
+
+      - name: Test
+        run: dotnet test -c ${{ matrix.config }} --no-build
+
+      - name: Version
+        id: version
+        shell: bash
+        run: |
+          echo "version-suffix=ci$GITHUB_RUN_ID" >> $GITHUB_OUTPUT
+          echo "version=$(grep -oPm1 "(?<=<VersionPrefix>)[^<]+" src/Directory.Build.props)-ci$GITHUB_RUN_ID" >> $GITHUB_OUTPUT
+
+      - name: Publish
+        shell: bash
+        run: |
+          target="${{ matrix.target }}"
+          release_name="schedule-one-mods_v${{ steps.version.outputs.version }}_$target"
+          ci/publish.sh "$target" "$release_name" ${{ matrix.config }} ${{ steps.version.outputs.version-suffix }}
+
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: schedule-one-mods_${{ steps.version.outputs.version }}_${{ matrix.target }}
+          path: "artifacts/*${{ matrix.target }}*/"

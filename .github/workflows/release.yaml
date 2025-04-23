@@ -1,0 +1,77 @@
+name: Publish
+
+on:
+  push:
+    tags:
+      - "v[0-9]+.[0-9]+.[0-9]+"
+  workflow_dispatch:
+
+env:
+  BUILD_URL: "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+
+jobs:
+  publish:
+    name: Publish
+    strategy:
+      matrix:
+        kind: ['windows']
+        include:
+          - kind: windows
+            os: windows-latest
+            target: win10-x64
+            config: Release
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup dotnet
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '6.0.x'
+     
+      - name: Publish
+        shell: bash
+        run: ./publish.sh
+        
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: artifacts
+          path: artifacts/*
+          retention-days: 1
+          if-no-files-found: error
+
+  release:
+    name: Release
+    needs: publish
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: artifacts
+          path: artifacts
+
+      - name: Show files
+        run: ls -R
+      
+      - name: Create Checksums
+        run: ci/checksums.sh
+
+      - name: Create Release Notes
+        run: ci/release-notes.sh
+
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        with:
+          draft: true
+          body_path: release-notes.md
+          files: |
+            artifacts/schedule-one-mods*
+            artifacts/shasum.txt          
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
