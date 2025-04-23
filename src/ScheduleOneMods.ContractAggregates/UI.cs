@@ -22,6 +22,8 @@ public static class UI
     private const string TasksTitlePath = "Title";
     private const string TasksContentPath = "Scroll View/Viewport/Content";
     private const string TasksNoDetailsPath = "Scroll View/Viewport/NoTasks";
+    private const int Padding = 5;
+    private const float SummaryPanelAnchorY = 0.3f;
 
     /// <summary>
     /// Ensures the layout elements this mod is based on exist in their expected places.
@@ -148,6 +150,7 @@ public static class UI
                 rect.anchorMax = alignLeft ? new Vector2(0.5f, 1) : Vector2.one;
 
                 var layout = container.AddComponent<HorizontalLayoutGroup>();
+                layout.padding = new RectOffset(0, Padding, 0, 0);
                 layout.spacing = 0;
                 layout.childAlignment = alignLeft ? TextAnchor.MiddleLeft : TextAnchor.MiddleRight;
                 layout.childControlWidth = true;
@@ -198,7 +201,7 @@ public static class UI
     public static void AdjustTasksPanel(Transform tasksPanel)
     {
         var rTransform = tasksPanel.GetComponent<RectTransform>();
-        rTransform.anchorMin = new Vector2(rTransform.anchorMin.x, 0.3f);
+        rTransform.anchorMin = new Vector2(rTransform.anchorMin.x, SummaryPanelAnchorY);
         rTransform.offsetMin = new Vector2(rTransform.offsetMin.x, rTransform.offsetMin.y - 70);
     }
 
@@ -218,7 +221,7 @@ public static class UI
         static void AdjustPanel(GameObject panel, UiRefs uiRefs)
         {
             var rTransform = panel.GetComponent<RectTransform>();
-            rTransform.anchorMax = new Vector2(uiRefs.TasksPanel.GetComponent<RectTransform>()!.anchorMax.x, 0.3f);
+            rTransform.anchorMax = new Vector2(uiRefs.TasksPanel.GetComponent<RectTransform>()!.anchorMax.x, SummaryPanelAnchorY);
 
             panel.transform.Find(TasksTitlePath)!.GetComponent<Text>()!.text = "Deal Summary";
             panel.transform.Find(TasksNoDetailsPath)!.GetComponent<Text>()!.text = "No active deals";
@@ -235,12 +238,12 @@ public static class UI
 
             const float cellWidthPercentage = 0.5f;
             var layout = container.AddComponent<GridLayoutGroup>();
-            layout.padding = new RectOffset(5, 10, 5, 5);
+            layout.padding = new RectOffset(Padding, Padding * 2, Padding, Padding);
             layout.cellSize = new Vector2(0, 30);
             layout.constraintCount = 2;
             layout.constraint = GridLayoutGroup.Constraint.FixedColumnCount;
             layout.childAlignment = TextAnchor.UpperLeft;
-            layout.spacing = new Vector2(5, 5);
+            layout.spacing = new Vector2(Padding, Padding);
             layout.cellSize = new Vector2(rect.rect.width * cellWidthPercentage, layout.cellSize.y);
         }
     }
