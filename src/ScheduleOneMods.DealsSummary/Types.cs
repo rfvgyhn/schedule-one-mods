@@ -1,4 +1,4 @@
-namespace ScheduleOneMods.ContractAggregates;
+namespace ScheduleOneMods.DealsSummary;
 
 public record Summary(string ProductId, int Total, Dictionary<string, int> Aggregates);
 public record Entry(string ProductId, int Quantity);

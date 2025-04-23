@@ -1,15 +1,15 @@
 ﻿using System.Collections;
-using ScheduleOneMods.ContractAggregates;
+using ScheduleOneMods.DealsSummary;
 using MelonLoader;
 using Il2CppScheduleOne.DevUtilities;
 using Il2CppScheduleOne.Quests;
 using Il2CppScheduleOne.UI.Phone;
 using ScheduleOneMods.Logging;
 
-[assembly: MelonInfo(typeof(Mod), "Contract Aggregates", "0.0.1", "rfvgyhn")]
+[assembly: MelonInfo(typeof(Mod), "Deals Summary", "0.0.1", "rfvgyhn")]
 [assembly: MelonGame("TVGS", "Schedule I")]
 
-namespace ScheduleOneMods.ContractAggregates;
+namespace ScheduleOneMods.DealsSummary;
 
 public sealed class Mod : MelonMod
 {

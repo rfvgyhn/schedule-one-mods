@@ -6,4 +6,4 @@ config="$3"
 version_suffix="$4"
 release_path="artifacts/$release_name"
 
-dotnet publish src/ScheduleOneMods.ContractAggregates/ScheduleOneMods.ContractAggregates.csproj -r "$target" --no-restore -o "$release_path" -c "$config" -p:VersionSuffix="$version_suffix"
+dotnet publish src/ScheduleOneMods.DealsSummary/ScheduleOneMods.DealsSummary.csproj -r "$target" --no-restore -o "$release_path" -c "$config" -p:VersionSuffix="$version_suffix"

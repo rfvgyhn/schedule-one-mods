@@ -6,7 +6,7 @@ using ScheduleOneMods.Logging;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace ScheduleOneMods.ContractAggregates;
+namespace ScheduleOneMods.DealsSummary;
 
 public record SummaryRefs(Transform ContentContainer, GameObject NoDealsLabel);
 

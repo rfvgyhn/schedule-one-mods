@@ -1,4 +1,4 @@
-namespace ScheduleOneMods.ContractAggregates;
+namespace ScheduleOneMods.DealsSummary;
 
 public class Calculator
 {

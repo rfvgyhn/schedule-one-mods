@@ -48,7 +48,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\ScheduleOneMods.ContractAggregates\ScheduleOneMods.ContractAggregates.csproj" />
+    <ProjectReference Include="..\..\src\ScheduleOneMods.DealsSummary\ScheduleOneMods.DealsSummary.csproj" />
   </ItemGroup>
 
 </Project>
