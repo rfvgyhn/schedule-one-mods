@@ -16,15 +16,8 @@ Collection of mods for the game [Schedule 1]. Requires the use of [MelonLoader].
 ## Install
 1. Download and setup [MelonLoader] by following the [instructions on the wiki]. Do note that Schedule 1 is an Il2Cpp game.
 2. Download the [latest release]
-3. (Optional) Verify the mod was built by Github from source and not tampered with by either:
-   1. Using the [Github CLI] to verify the integrity and provenance using its associated cryptographically [signed attestations]
-
-      `gh attestation verify schedule-one-mods_v[versionNumber].zip -R rfvgyhn/schedule-one-mods`
-   2. Comparing the _shasum.txt_ contents with the _Create Checksums_ section of the job log of the [automated release]
-
-      See [wiki] for instructions on how to check the checksums of the release artifacts.
-4. Extract the DLL from the zip/tar archive
-5. Copy DLL into your `steamapps/common/Schedule I/Mods` folder
+3. Extract the DLL from the zip/tar archive
+4. Copy DLL into your `steamapps/common/Schedule I/Mods` folder
 
 ## Build
 
