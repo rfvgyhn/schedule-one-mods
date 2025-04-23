@@ -17,6 +17,7 @@ public sealed class Mod : MelonMod
     private UiRefs? _uiRefs;
     private Calculator? _calculator;
     private int _lastContractCount = -1;
+    private readonly List<Contract> _activeContracts = new();
 #if DEBUG
     private bool _logged;
 #endif
@@ -46,19 +47,19 @@ public sealed class Mod : MelonMod
         if (!journalApp.isOpen)
             return;
 
-        var activeContracts = new List<Contract>();
+        _activeContracts.Clear();
         foreach (var c in Il2CppScheduleOne.Quests.Contract.Contracts)
         {
             if (c.Dealer is null && c.QuestState == EQuestState.Active)
-                activeContracts.Add(new(c));
+                _activeContracts.Add(new(c));
         }
 
-        if (_lastContractCount == activeContracts.Count)
+        if (_lastContractCount == _activeContracts.Count)
             return;
-        _lastContractCount = activeContracts.Count;
-        Log.Debug($"Contract count: {activeContracts.Count}");
+        _lastContractCount = _activeContracts.Count;
+        Log.Debug($"Contract count: {_activeContracts.Count}");
 
-        var totals = _calculator!.CalculateTotals(activeContracts);
+        var totals = _calculator!.CalculateTotals(_activeContracts);
 
         Log.Trace("Updating summary");
         UI.UpdateSummary(_summaryRefs, _uiRefs, totals);
