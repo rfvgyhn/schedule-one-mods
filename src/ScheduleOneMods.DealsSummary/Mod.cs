@@ -17,6 +17,12 @@ public sealed class Mod : MelonMod
 #if DEBUG
     private bool _logged;
 #endif
+    
+    public override void OnInitializeMelon()
+    {
+        base.OnInitializeMelon();
+        Log.SetLogger<Mod>();
+    }
 
     public override void OnSceneWasInitialized(int buildIndex, string sceneName)
     {
