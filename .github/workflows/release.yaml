@@ -17,15 +17,7 @@ env:
 jobs:
   publish:
     name: Publish
-    strategy:
-      matrix:
-        kind: ['windows']
-        include:
-          - kind: windows
-            os: windows-latest
-            target: win-x64
-            config: Release
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -42,7 +34,6 @@ jobs:
           GITHUB_REPO: ${{ github.repository }}
 
       - name: Publish
-        shell: bash
         run: ./publish.sh
         
       - name: Upload artifacts
