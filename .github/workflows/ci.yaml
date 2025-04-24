@@ -28,6 +28,12 @@ jobs:
         with:
           dotnet-version: '6.0.x'
 
+      - name: Download game assemblies from private repo
+        run: ci/download-game-assemblies.sh
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_ASSEMBLIES_PAT }}
+          GITHUB_REPO: ${{ github.repository }}
+
       - name: Restore
         run: dotnet restore -r ${{ matrix.target }}
 
