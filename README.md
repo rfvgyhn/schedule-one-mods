@@ -7,17 +7,23 @@ Collection of mods for the game [Schedule 1]. Requires the use of [MelonLoader].
 * [Build]
 
 ## Available Mods
-* Deals Summary
+* **Deals Summary**
    
   Provides a summary of your active deals in the Journal app. Includes the totals of each product and packaging aggregates
 
   ![contract-aggregates-preview]
 
+* **Counteroffer Asking Price Buttons**
+  
+  Adds buttons to add/subtract the asking price of the currently selected product in the counteroffer menu
+
+  ![counteroffer-buttons-preview]
+
 ## Install
 1. Download and setup [MelonLoader] by following the [instructions on the wiki]. Do note that Schedule 1 is an Il2Cpp game.
 2. Download the [latest release]
-3. Extract the DLL from the zip
-4. Copy DLL into your `steamapps/common/Schedule I/Mods` folder
+3. Extract the DLLs from the zip
+4. Copy desired DLLs into your `steamapps/common/Schedule I/Mods` folder
 
 ## Build
 
@@ -46,6 +52,7 @@ once.
 5. Copy resulting dll(s) from `src/[project]/bin/Release/net6.0/publish/[project].dll` to your game's `Mods` directory
 
 [contract-aggregates-preview]: https://rfvgyhn.blob.core.windows.net/schedule1/contract-aggregates-preview.webp
+[counteroffer-buttons-preview]: https://rfvgyhn.blob.core.windows.net/schedule1/counteroffer-buttons-preview.webp
 [.Net SDK]: https://dotnet.microsoft.com/download/dotnet
 [MelonLoader]: https://melonloader.co/
 [Schedule 1]: https://www.scheduleonegame.com/

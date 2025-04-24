@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScheduleOneMods.DealsSummar
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScheduleOneMods.Logging", "src\ScheduleOneMods.Logging\ScheduleOneMods.Logging.csproj", "{25342875-DEF9-422E-8408-AF02C4A9D178}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScheduleOneMods.CounterPriceButton", "src\ScheduleOneMods.CounterPriceButton\ScheduleOneMods.CounterPriceButton.csproj", "{99C8E0D2-DE0F-4C9E-BA7A-AB45A4B74628}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,5 +32,9 @@ Global
 		{25342875-DEF9-422E-8408-AF02C4A9D178}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{25342875-DEF9-422E-8408-AF02C4A9D178}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{25342875-DEF9-422E-8408-AF02C4A9D178}.Release|Any CPU.Build.0 = Release|Any CPU
+		{99C8E0D2-DE0F-4C9E-BA7A-AB45A4B74628}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{99C8E0D2-DE0F-4C9E-BA7A-AB45A4B74628}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{99C8E0D2-DE0F-4C9E-BA7A-AB45A4B74628}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{99C8E0D2-DE0F-4C9E-BA7A-AB45A4B74628}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

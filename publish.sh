@@ -8,6 +8,7 @@ release_path="$artifacts_path/$release_name"
 
 dotnet restore -r $target
 dotnet publish src/ScheduleOneMods.DealsSummary/ScheduleOneMods.DealsSummary.csproj -r $target --no-restore -o "$release_path" -c Release
+dotnet publish src/ScheduleOneMods.CounterPriceButton/ScheduleOneMods.CounterPriceButton.csproj -r $target --no-restore -o "$release_path" -c Release
 find "$release_path"/ ! -name 'ScheduleOneMods.*.dll' -delete
 rename -v ScheduleOneMods Rfvgyhn "$release_path"/*
 
