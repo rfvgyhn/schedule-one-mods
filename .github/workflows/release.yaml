@@ -43,6 +43,17 @@ jobs:
       - name: Publish
         run: ./publish.sh
         
+      - name: Create Checksums
+        run: ci/checksums.sh
+
+      - name: Generate artifact attestation
+        uses: actions/attest-build-provenance@v2
+        with:
+          subject-checksums: artifacts/shasum.txt
+
+      - name: Create Release Notes
+        run: ci/release-notes.sh
+        
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
@@ -51,8 +62,8 @@ jobs:
           retention-days: 1
           if-no-files-found: error
 
-  release:
-    name: Release
+  release-github:
+    name: Release Github
     needs: publish
     runs-on: ubuntu-latest
     steps:
@@ -67,17 +78,6 @@ jobs:
 
       - name: Show files
         run: ls -R
-      
-      - name: Create Checksums
-        run: ci/checksums.sh
-
-      - name: Generate artifact attestation
-        uses: actions/attest-build-provenance@v2
-        with:
-          subject-checksums: artifacts/shasum.txt
-  
-      - name: Create Release Notes
-        run: ci/release-notes.sh
 
       - name: Release
         uses: softprops/action-gh-release@v1
@@ -89,3 +89,31 @@ jobs:
             artifacts/shasum.txt          
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          
+  release-nexus:
+    name: Release Nexusmods
+    needs: publish
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+          merge-multiple: true
+          
+      - name: Convert Release Notes Format
+        run: ci/markdown-to-nexus.sh
+
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        with:
+          draft: true
+          body_path: release-notes.md
+          files: |
+            artifacts/schedule-one-mods*
+            artifacts/shasum.txt          
+        env:
+          GITHUB_TOKEN: ${{ secrets.NEXUS_API_KEY }}
