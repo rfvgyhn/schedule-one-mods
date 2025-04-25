@@ -30,7 +30,9 @@ jobs:
       - name: Setup dotnet
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: '6.0.x'
+          dotnet-version: |
+            6.0.x
+            9
 
       - name: Download game assemblies from private repo
         run: ci/download-game-assemblies.sh
