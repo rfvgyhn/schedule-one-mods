@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 for cmd in perl-rename rename; do
     if command -v "$cmd" >/dev/null; then
         RENAME_CMD="$cmd"
@@ -21,7 +23,7 @@ release_path="$artifacts_path/$release_name"
 dotnet restore -r $target
 dotnet publish src/ScheduleOneMods.DealsSummary/ScheduleOneMods.DealsSummary.csproj -r $target --no-restore -o "$release_path" -c Release
 dotnet publish src/ScheduleOneMods.CounterPriceButton/ScheduleOneMods.CounterPriceButton.csproj -r $target --no-restore -o "$release_path" -c Release
-find "$release_path"/ ! -name 'ScheduleOneMods.*.dll' -delete
+find "$release_path"/ ! -name 'ScheduleOneMods.*.dll' -type f -delete
 $RENAME_CMD 's/ScheduleOneMods/Rfvgyhn/' "$release_path"/*
 
 cp README.md CHANGELOG.md "$release_path"
