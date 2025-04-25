@@ -25,7 +25,7 @@ jobs:
       - name: Install required tools
         run: |
           sudo apt-get update
-          sudo apt-get install rename
+          sudo apt-get install util-linux
 
       - name: Setup dotnet
         uses: actions/setup-dotnet@v4
