@@ -1,5 +1,5 @@
 #!/bin/bash
-set -e
+set -ex
 
 root=$(dirname "$(readlink -f "$0")")/..
 source "$root/ci/projects.sh"
@@ -15,7 +15,7 @@ done
 
 function gh_attest_str() {
     for project in "${projects[@]}"; do
-        local artifact_name=$(find "$root/artifacts" -type f -name "*$1*.zip" -printf "%f\n" -quit)
+        local artifact_name=$(find "$root/artifacts" -type f -name "*$project*.zip" -printf "%f\n" -quit)
         echo "    \`gh attestation verify $artifact_name -R rfvgyhn/schedule-one-mods\`"
     done
 }
