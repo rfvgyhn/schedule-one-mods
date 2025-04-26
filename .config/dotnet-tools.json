@@ -8,13 +8,6 @@
         "unex"
       ],
       "rollForward": false
-    },
-    "converter.markdowntobbcodenm.tool": {
-      "version": "1.0.0.17",
-      "commands": [
-        "markdown_to_bbcodenm"
-      ],
-      "rollForward": false
     }
   }
 }
