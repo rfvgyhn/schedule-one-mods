@@ -11,8 +11,30 @@ env:
   RID: win-x64
   CONFIG: Release
 jobs:
-  build:
+  detect-changes:
     runs-on: ubuntu-latest
+    outputs:
+      projects: ${{ steps.filter.outputs.changes }}
+    steps:
+      - uses: actions/checkout@v3
+      - uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            DealsSummary:
+              - src/ScheduleOneMods.DealsSummary
+              - tests/ScheduleOneMods.DealsSummary
+            CounterPriceButton: src/ScheduleOneMods.CounterPriceButton
+  build:
+    needs: detect-changes
+    strategy:
+      matrix: 
+        project: ${{ fromJSON(needs.detect-changes.outputs.projects) }}
+    runs-on: ubuntu-latest
+    env:
+      src_proj_path: src/ScehduleOneMods.${{ matrix.project }}/ScehduleOneMods.${{ matrix.project }}.csproj
+      test_proj_path: tests/ScehduleOneMods.${{ matrix.project }}.Tests/ScehduleOneMods.${{ matrix.project }}.Tests.csproj
+      release_name: schedule-one-mods_${{ matrix.project }}_v${{ steps.version.outputs.version }}_${{ env.RID }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -34,27 +56,25 @@ jobs:
         run: dotnet restore -r ${{ env.RID }}
 
       - name: Build
-        run: dotnet build -c ${{ env.CONFIG }} --no-restore
+        run: dotnet build ${{ env.src_proj_path_path }} -c ${{ env.CONFIG }}
 
       - name: Test
-        run: dotnet test -c ${{ env.CONFIG }} --no-build
+        if: ${{ hashFiles(env.test_proj_path) != '' }}
+        run: dotnet test ${{ env.test_proj_path }} -c ${{ env.CONFIG }}
 
       - name: Version
         id: version
         shell: bash
         run: |
           echo "version-suffix=ci$GITHUB_RUN_ID" >> $GITHUB_OUTPUT
-          echo "version=$(grep -oPm1 "(?<=<VersionPrefix>)[^<]+" src/Directory.Build.props)-ci$GITHUB_RUN_ID" >> $GITHUB_OUTPUT
+          echo "version=$(grep -oPm1 "(?<=<VersionPrefix>)[^<]+" ${{ env.src_proj_path }})-ci$GITHUB_RUN_ID" >> $GITHUB_OUTPUT
 
       - name: Publish
         shell: bash
-        run: |
-          target="${{ env.RID }}"
-          release_name="schedule-one-mods_v${{ steps.version.outputs.version }}_$target"
-          ci/publish.sh "$target" "$release_name" ${{ env.CONFIG }} ${{ steps.version.outputs.version-suffix }}
+        run: ci/publish.sh ${{ matrix.project }} ${{ env.RID }} ${{ env.release_name }} ${{ env.CONFIG }} ${{ steps.version.outputs.version-suffix }}
 
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: schedule-one-mods_${{ steps.version.outputs.version }}_${{ env.RID }}
+          name: ${{ env.release_name }}
           path: "artifacts/*${{ env.RID }}*/"

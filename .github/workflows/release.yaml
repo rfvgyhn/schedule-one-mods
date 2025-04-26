@@ -15,17 +15,26 @@ env:
   BUILD_URL: "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
 
 jobs:
+  detect-changes:
+    runs-on: ubuntu-latest
+    outputs:
+      projects: ${{ steps.filter.outputs.changes }}
+    steps:
+      - uses: actions/checkout@v3
+      - uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            DealsSummary:
+              - src/ScheduleOneMods.DealsSummary
+              - tests/ScheduleOneMods.DealsSummary
+            CounterPriceButton: src/ScheduleOneMods.CounterPriceButton
   publish:
     name: Publish
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-
-      - name: Install required tools
-        run: |
-          sudo apt-get update
-          sudo apt-get install rename
 
       - name: Setup dotnet
         uses: actions/setup-dotnet@v4
@@ -50,10 +59,7 @@ jobs:
         uses: actions/attest-build-provenance@v2
         with:
           subject-checksums: artifacts/shasum.txt
-
-      - name: Create Release Notes
-        run: ci/release-notes.sh
-        
+  
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
@@ -76,6 +82,10 @@ jobs:
           path: artifacts
           merge-multiple: true
 
+      - name: Create Release Notes
+        run: |
+          ci/release-notes.sh > release-notes.md
+
       - name: Show files
         run: ls -R
 
@@ -92,7 +102,10 @@ jobs:
           
   release-nexus:
     name: Release Nexusmods
-    needs: publish
+    needs: [publish, detect-changes]
+    strategy:
+      matrix:
+        project: ${{ fromJSON(needs.detect-changes.outputs.projects) }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -103,17 +116,13 @@ jobs:
         with:
           path: artifacts
           merge-multiple: true
-          
-      - name: Convert Release Notes Format
-        run: ci/markdown-to-nexus.sh
+
+      - name: Create Release Notes
+        run: |
+          ci/release-notes.sh ${{ matrix.project }} | ci/markdown-to-nexus.sh > release-notes.txt
 
       - name: Release
-        uses: softprops/action-gh-release@v1
-        with:
-          draft: true
-          body_path: release-notes.md
-          files: |
-            artifacts/schedule-one-mods*
-            artifacts/shasum.txt          
+        run: ci/release-nexus.sh ${{ matrix.project }} release-notes.txt      
         env:
-          GITHUB_TOKEN: ${{ secrets.NEXUS_API_KEY }}
+          UNEX_APIKEY: ${{ secrets.NEXUS_API_KEY }}
+          UNEX_SESSION_COOKIE: ${{ secrets.NEXUS_SESSION_COOKIE }}

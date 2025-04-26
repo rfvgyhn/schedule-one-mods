@@ -8,7 +8,6 @@
   </PropertyGroup>
   
   <PropertyGroup>
-    <VersionPrefix>0.1.0</VersionPrefix>
     <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
   </PropertyGroup>
   
