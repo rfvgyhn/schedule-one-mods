@@ -58,6 +58,14 @@ once.
    ```
 5. Copy resulting dll(s) from `src/[project]/bin/Release/net6.0/publish/[project].dll` to your game's `Mods` directory
 
+## Automated Builds
+
+Mods are automatically deployed to Github releases and Nexus Mods when a tag is found to match `ProjectName-v0.0.0`.
+
+Build definition is at [.github/workflows/release.yaml].
+
+Nexus Mods publishing makes use of [BUTR.NexusUploader] since Nexus Mods doesn't provide an API to upload mods.
+
 [contract-aggregates-preview]: https://rfvgyhn.blob.core.windows.net/schedule1/contract-aggregates-preview.webp
 [counteroffer-buttons-preview]: https://rfvgyhn.blob.core.windows.net/schedule1/counteroffer-buttons-preview.webp
 [.Net SDK]: https://dotnet.microsoft.com/download/dotnet
@@ -72,3 +80,5 @@ once.
 [signed attestations]: https://docs.github.com/en/actions/security-for-github-actions/using-artifact-attestations/using-artifact-attestations-to-establish-provenance-for-builds
 [automated release]: https://github.com/rfvgyhn/schedule-one-mods/actions
 [wiki]: https://github.com/rfvgyhn/schedule-one-mods/wiki/Verify-Checksums-for-a-Release
+[.github/workflows/release.yaml]: .github/workflows/release.yaml
+[BUTR.NexusUploader]: https://github.com/BUTR/BUTR.NexusUploader
