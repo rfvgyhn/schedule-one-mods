@@ -34,7 +34,6 @@ jobs:
     env:
       src_proj_path: src/ScehduleOneMods.${{ matrix.project }}/ScehduleOneMods.${{ matrix.project }}.csproj
       test_proj_path: tests/ScehduleOneMods.${{ matrix.project }}.Tests/ScehduleOneMods.${{ matrix.project }}.Tests.csproj
-      release_name: schedule-one-mods_${{ matrix.project }}_v${{ steps.version.outputs.version }}_${{ env.RID }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -66,15 +65,17 @@ jobs:
         id: version
         shell: bash
         run: |
+          version="$(grep -oPm1 "(?<=<VersionPrefix>)[^<]+" ${{ env.src_proj_path }})-ci$GITHUB_RUN_ID"
           echo "version-suffix=ci$GITHUB_RUN_ID" >> $GITHUB_OUTPUT
-          echo "version=$(grep -oPm1 "(?<=<VersionPrefix>)[^<]+" ${{ env.src_proj_path }})-ci$GITHUB_RUN_ID" >> $GITHUB_OUTPUT
+          echo "version=$version" >> $GITHUB_OUTPUT
+          echo "release_name=schedule-one-mods_${{ matrix.project }}_v$version_${{ env.RID }}" >> $GITHUB_OUTPUT
 
       - name: Publish
         shell: bash
-        run: ci/publish.sh ${{ matrix.project }} ${{ env.RID }} ${{ env.release_name }} ${{ env.CONFIG }} ${{ steps.version.outputs.version-suffix }}
+        run: ci/publish.sh ${{ matrix.project }} ${{ env.RID }} ${{ steps.version.outputs.release_name }} ${{ env.CONFIG }} ${{ steps.version.outputs.version-suffix }}
 
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ env.release_name }}
+          name: ${{ steps.version.outputs.release_name }}
           path: "artifacts/*${{ env.RID }}*/"
