@@ -2,8 +2,6 @@
 
 set -e
 
-{ echo "No mod IDs yet"; exit 1; }
-
 [[ ${#@} != 1 ]] && { echo "Usage: release-nexus.sh githubTag"; exit 1; }
 
 github_tag=$1
@@ -15,10 +13,10 @@ changelog="Detailed changelog available on Github. https://github.com/rfvgyhn/sc
 
 case $project in
   DealsSummary)
-    modId=123
+    modId=825
     ;;
   CounterPriceButton)
-    modId=321
+    modId=830
     ;;
   *)
     echo "Unknown project '$project'"
