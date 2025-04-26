@@ -9,6 +9,7 @@ artifacts_path=artifacts
 projects=("${@:-${default_projects[@]}}")
 
 dotnet restore -r $target
+dotnet build -c Release --no-restore
 
 for project in "${projects[@]}"; do
     version=$(grep -oPm1 "(?<=<VersionPrefix>)[^<]+" "src/ScheduleOneMods.$project/ScheduleOneMods.$project.csproj")
