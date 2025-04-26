@@ -15,9 +15,6 @@ jobs:
   publish:
     name: Publish
     runs-on: ubuntu-latest
-    outputs: 
-      attestation_url: ${{ steps.attest.outputs.attestation-url }}
-      checksum_url: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}/jobs/${{ github.job }}#step:${{ steps.checksum.number }}:1
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -55,6 +52,9 @@ jobs:
           path: artifacts/*
           retention-days: 1
           if-no-files-found: error
+    outputs:
+      attestation_url: ${{ steps.attest.outputs.attestation-url }}
+      checksum_url: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}/jobs/${{ github.job }}#step:${{ steps.checksum.number }}:1
 
   release-github:
     name: Release Github
