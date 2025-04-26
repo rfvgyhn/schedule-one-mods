@@ -22,15 +22,16 @@ function gh_attest_str() {
 cat << EOF
 -----
 Verify the release artifacts are built from source by Github by either:
-  1. Using the [Github CLI] to [verify] the integrity and provenance using its associated cryptographically signed attestations
+  1. Using the [Github CLI] to [verify] the integrity and provenance using its associated cryptographically [signed attestations]
 $(gh_attest_str)
      
   2. Comparing the _shasum.txt_ contents with the _Create Checksums_ section of the job log of the [automated release]
   
      See [wiki] for instructions on how to check the checksums of the release artifacts.
 
-[automated release]: ${BUILD_URL:-https://github.com/rfvgyhn/schedule-one-mods/actions}
+[automated release]: ${CHECKSUM_URL:-https://github.com/rfvgyhn/schedule-one-mods/actions}
 [wiki]: https://github.com/rfvgyhn/schedule-one-mods/wiki/Verify-Checksums-for-a-Release
 [Github CLI]: https://cli.github.com/
 [verify]: https://docs.github.com/en/actions/security-for-github-actions/using-artifact-attestations/using-artifact-attestations-to-establish-provenance-for-builds
+[signed attestations]: ${ATTESTATION_URL:-https://github.com/rfvgyhn/schedule-one-mods/attestations}
 EOF

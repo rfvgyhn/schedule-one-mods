@@ -11,9 +11,6 @@ on:
       - "v[0-9]+.[0-9]+.[0-9]+"
   workflow_dispatch:
 
-env:
-  BUILD_URL: "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
-
 jobs:
   detect-changes:
     runs-on: ubuntu-latest
@@ -32,6 +29,9 @@ jobs:
   publish:
     name: Publish
     runs-on: ubuntu-latest
+    outputs: 
+      attestation_url: ${{ steps.attest.outputs.attestation-url }}
+      checksum_url: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}/jobs/${{ github.job }}#step:${{ steps.checksum.number }}:1
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -53,9 +53,11 @@ jobs:
         run: ./publish.sh
         
       - name: Create Checksums
+        id: checksum
         run: ci/checksums.sh
 
       - name: Generate artifact attestation
+        id: attest
         uses: actions/attest-build-provenance@v2
         with:
           subject-checksums: artifacts/shasum.txt
@@ -82,9 +84,11 @@ jobs:
           path: artifacts
           merge-multiple: true
 
-      - name: Create Release Notes
-        run: |
-          ci/release-notes.sh > release-notes.md
+      - name: Create Release Notes 
+        env:
+          ATTESTATION_URL: ${{ needs.publish.outputs.attestation_url }}
+          CHECKSUM_URL: ${{ needs.publish.outputs.checksum_url }}
+        run: ci/release-notes.sh > release-notes.md
 
       - name: Show files
         run: ls -R
