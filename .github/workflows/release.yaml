@@ -121,12 +121,8 @@ jobs:
           path: artifacts
           merge-multiple: true
 
-      - name: Create Release Notes
-        run: |
-          ci/release-notes.sh ${{ matrix.project }} | ci/markdown-to-nexus.sh > release-notes.txt
-
       - name: Release
-        run: ci/release-nexus.sh ${{ matrix.project }} release-notes.txt      
+        run: ci/release-nexus.sh ${{ matrix.project }} ${{ github.ref_name }}
         env:
           UNEX_APIKEY: ${{ secrets.NEXUS_API_KEY }}
           UNEX_SESSION_COOKIE: ${{ secrets.NEXUS_SESSION_COOKIE }}
