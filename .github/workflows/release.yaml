@@ -51,14 +51,21 @@ jobs:
           path: artifacts/*
           retention-days: 1
           if-no-files-found: error
-      - name: Create job outputs
-        id: jobinfo
-        run: |
-          echo "job-id=${{ github.job }}" >> $GITHUB_OUTPUT
-          echo "checksum-number=6" >> $GITHUB_OUTPUT
+      - name: Get Job Id
+        uses: actions/github-script@v6
+        id: job-info
+        with:
+          script: |
+            const { data: jobs } = await github.rest.actions.listJobsForWorkflowRun({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              run_id: context.runId
+            });
+            const job = jobs.find(j => j.name === github.context.job);
+            return job.id;
     outputs:
       attestation_url: ${{ steps.attest.outputs.attestation-url }}
-      checksum_url: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}/jobs/${{ steps.jobinfo.job-id }}#step:${{ steps.jobinfo.checksum-number }}:1
+      checksum_url: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}/jobs/${{ steps.job-info.outputs.result }}#step:6:1
 
   release-github:
     name: Release Github
