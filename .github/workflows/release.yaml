@@ -52,13 +52,13 @@ jobs:
           retention-days: 1
           if-no-files-found: error
       - name: Create job outputs
-        id: job_info
+        id: jobinfo
         run: |
-          echo "::set-output name=job_id::$GITHUB_JOB"
-          echo "::set-output name=checksum_number::6"
+          echo "job-id=${{ github.job }}" >> $GITHUB_OUTPUT
+          echo "checksum-number=6" >> $GITHUB_OUTPUT
     outputs:
       attestation_url: ${{ steps.attest.outputs.attestation-url }}
-      checksum_url: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}/jobs/${{ steps.job_info.job_id }}#step:${{ steps.job_info.checksum_number }}:1
+      checksum_url: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}/jobs/${{ steps.jobinfo.job-id }}#step:${{ steps.jobinfo.checksum-number }}:1
 
   release-github:
     name: Release Github
