@@ -56,6 +56,9 @@ jobs:
       src_proj_path: src/ScehduleOneMods.${{ matrix.project }}/ScehduleOneMods.${{ matrix.project }}.csproj
       test_proj_path: tests/ScehduleOneMods.${{ matrix.project }}.Tests/ScehduleOneMods.${{ matrix.project }}.Tests.csproj
     steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        
       - name: Restore build output
         uses: actions/cache@v3
         with:
