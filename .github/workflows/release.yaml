@@ -54,22 +54,26 @@ jobs:
           
       - name: Create job outputs
         id: job-info
-        run: |
-          json=$(curl -L \
-            -H "Accept: application/vnd.github+json" \
-            -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}"\
-            -H "X-GitHub-Api-Version: 2022-11-28" \
-            https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}/attempts/${GITHUB_RUN_ATTEMPT}/jobs)
-          run_url=$(echo "$json" | jq -r .jobs[].html_url)
-          checksum_number=$(echo "$json" | jq '.jobs[].steps[] | select(.name=="Create Checksums") | .number')
-          echo "checksum_url=${run_url}#step:$checksum_number:1" >> $GITHUB_OUTPUT
+        run: ci/create-job-outputs.sh >> $GITHUB_OUTPUT
     outputs:
       attestation_url: ${{ steps.attest.outputs.attestation-url }}
       checksum_url: ${{ steps.job-info.outputs.checksum_url }}
+      job_id: ${{ steps.job-info.outputs.job_id }}
 
+  archive-job-log:
+    name: Archive Job Log
+    needs: publish
+    runs-on: ubuntu-latest
+    steps:
+      - name: Archive
+        run: ci/archive-job-log.sh ${{ needs.publish.outputs.job_id }} >> $GITHUB_OUTPUT
+    outputs:
+      archived_job_url: ${{ steps.archive.outputs.archived_url }}
+          
   release-github:
     name: Release Github
-    needs: publish
+    needs: [publish, archive-job-log]
+    if: needs.publish.result == 'success' && needs.archive-job-log.result != 'cancelled'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -85,6 +89,7 @@ jobs:
         env:
           ATTESTATION_URL: ${{ needs.publish.outputs.attestation_url }}
           CHECKSUM_URL: ${{ needs.publish.outputs.checksum_url }}
+          ARCHIVED_JOB_URL: ${{ needs.archive-job-log.outputs.archived_job_url }}
         run: ci/release-notes.sh > release-notes.md
 
       - name: Show files
