@@ -13,7 +13,7 @@ release=$(
       "$github_url/latest"
 )
 description=$(echo "$release" | jq -r '.body')
-asset_id=$(echo  | jq -r '.assets[0] .id')
+asset_id=$(echo "$release" | jq -r '.assets[0] .id')
 
 # https://docs.github.com/en/rest/reference/repos#get-a-release-asset
 curl -L -s \
