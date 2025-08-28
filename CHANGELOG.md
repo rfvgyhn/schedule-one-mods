@@ -1,5 +1,9 @@
 # Changelog
 
+## [unreleased]
+### Bug Fixes
+- Fix System.MissingMethodException in DealsSummary. Property `QuestState` was changed to `State` in 0.4.0
+
 ## [CounterPriceButton v0.1.0] - 2025-04-24
 Initial release
 

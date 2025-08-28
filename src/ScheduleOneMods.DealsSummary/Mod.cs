@@ -52,7 +52,7 @@ public sealed class Mod : MelonMod
         _activeContracts.Clear();
         foreach (var c in Il2CppScheduleOne.Quests.Contract.Contracts)
         {
-            if (c.Dealer is null && c.QuestState == EQuestState.Active)
+            if (c.Dealer is null && c.State == EQuestState.Active)
                 _activeContracts.Add(new(c));
         }
 
