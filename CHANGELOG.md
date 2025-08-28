@@ -1,6 +1,6 @@
 # Changelog
 
-## [unreleased]
+## [DealsSummary v0.1.1] - 2025-08-28
 ### Bug Fixes
 - Fix System.MissingMethodException in DealsSummary. Property `QuestState` was changed to `State` in 0.4.0
 
@@ -10,6 +10,7 @@ Initial release
 ## [DealsSummary v0.1.0] - 2025-04-24
 Initial release
 
-[unreleased]: https://github.com/rfvgyhn/schedule-one-mods/compare/v0.1.0...HEAD
+[unreleased]: https://github.com/rfvgyhn/schedule-one-mods/compare/DealsSummary-v0.1.1...HEAD
 [CounterPriceButton v0.1.0]: https://github.com/rfvgyhn/schedule-one-mods/compare/a29ebf89...CounterPriceButton-v0.1.0
+[DealsSummary v0.1.1]: https://github.com/rfvgyhn/schedule-one-mods/compare/DealsSummary-v0.1.0...DealsSummary-v0.1.1
 [DealsSummary v0.1.0]: https://github.com/rfvgyhn/schedule-one-mods/compare/a29ebf89...DealsSummary-v0.1.0
