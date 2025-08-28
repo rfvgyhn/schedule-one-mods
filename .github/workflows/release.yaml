@@ -42,15 +42,7 @@ jobs:
           path: artifacts/*
           retention-days: 1
           if-no-files-found: error
-          
-      - name: Create job outputs
-        id: job-info
-        run: ci/create-job-outputs.sh >> $GITHUB_OUTPUT
-    outputs:
-      attestation_url: ${{ steps.attest.outputs.attestation-url }}
-      checksum_url: ${{ steps.job-info.outputs.checksum_url }}
-      job_id: ${{ steps.job-info.outputs.job_id }}
-      
+
   publish:
     name: Publish
     needs: build
