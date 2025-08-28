@@ -39,6 +39,7 @@ latest_version=$(
 [[ "$(printf '%s\n' "$version" "$latest_version" | sort -V | head -n1)" = "$version" ]] &&
     { echo "Latest version on Nexus Mods '$latest_version' is equal to or newer than '$version'"; exit 1; }
 
+dotnet tool restore
 dotnet unex check
 dotnet unex upload $modId $artifact -v $version
 dotnet changelog $version -c "$changelog"
