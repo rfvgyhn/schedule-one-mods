@@ -1,5 +1,5 @@
 #!/bin/bash
-set -ex
+set -e
 
 root=$(dirname "$(readlink -f "$0")")/..
 source "$root/ci/projects.sh"
