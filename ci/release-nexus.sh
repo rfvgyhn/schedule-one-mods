@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -e
+set -ex
 
 [[ ${#@} != 1 ]] && { echo "Usage: release-nexus.sh githubTag"; exit 1; }
 
@@ -41,5 +41,5 @@ latest_version=$(
 
 dotnet tool restore
 dotnet unex check
-dotnet unex upload $modId $artifact -v $version
-dotnet changelog $version -c "$changelog"
+dotnet unex upload $modId "$artifact" -v $version -f "$project"
+dotnet unex changelog $version -c "$changelog"
