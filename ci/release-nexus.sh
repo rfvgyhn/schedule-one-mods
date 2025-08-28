@@ -28,6 +28,7 @@ artifact=$(find "$root"/artifacts/ -name "*$project*.zip" -type f)
 
 export UNEX_GAME=schedule1
 export UNEX_MODID=$modId
+export UNEX_PREVIOUSFILE=auto
 
 latest_version=$(
     curl -s \
